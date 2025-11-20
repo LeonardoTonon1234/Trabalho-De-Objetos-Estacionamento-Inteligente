@@ -1,0 +1,6 @@
+com/estacionamento/api/VagaService.class
+com/estacionamento/api/VagaController.class
+com/estacionamento/api/Vaga.class
+com/estacionamento/api/DataLoader.class
+com/estacionamento/api/VagaRepository.class
+com/estacionamento/api/ApiEstacionamentoApplication.class
