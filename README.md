@@ -86,3 +86,17 @@ Inclui:
 - Histórico de ocupação
 
 ---
+
+## 📌 Conclusão
+
+Este projeto demonstra como integrar ESP32 + MQTT + Node-RED + InfluxDB + Grafana em um sistema funcional de IoT.  
+O resultado final permite monitorar um estacionamento completo em tempo real, visualizar indicadores, analisar histórico e entender padrões de utilização.
+
+---
+
+## 📜 Licença
+Projeto acadêmico desenvolvido para fins educacionais.
+
+---
+
+
