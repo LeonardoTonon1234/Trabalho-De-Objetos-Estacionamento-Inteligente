@@ -96,6 +96,11 @@ O resultado final permite monitorar um estacionamento completo em tempo real, vi
 
 ## 📜 Licença
 Projeto acadêmico desenvolvido para fins educacionais.
+---
+
+## Link do Vídeo 
+
+- https://youtu.be/m3tlUyz49YI
 
 ---
 
