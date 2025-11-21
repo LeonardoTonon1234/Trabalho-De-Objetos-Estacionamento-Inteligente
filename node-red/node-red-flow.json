@@ -1,0 +1,268 @@
+[
+    {
+        "id": "6c57a4257b2aeef5",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c332a0d8aee718d8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3c17fadad434ea3f",
+        "type": "telegram bot",
+        "botname": "Estacionamento_inteligente_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "testenvironment": false,
+        "updatemode": "polling",
+        "pollinterval": 300,
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": 6667,
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbothost": "0.0.0.0",
+        "localbotport": 8443,
+        "publicbotport": 8443,
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "b176993757d74a83",
+        "type": "influxdb3-config",
+        "name": "influx_estacionamento",
+        "host": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "database": "923b7dfa04337bfc"
+    },
+    {
+        "id": "cf272db01bbce67c",
+        "type": "mqtt in",
+        "z": "6c57a4257b2aeef5",
+        "name": "",
+        "topic": "estacionamento/vaga1/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "c332a0d8aee718d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 480,
+        "y": 260,
+        "wires": [
+            [
+                "2edf7f273997b5d9"
+            ]
+        ]
+    },
+    {
+        "id": "733b118a4ed17547",
+        "type": "mqtt in",
+        "z": "6c57a4257b2aeef5",
+        "name": "",
+        "topic": "estacionamento/vaga2/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "c332a0d8aee718d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 480,
+        "y": 320,
+        "wires": [
+            [
+                "2edf7f273997b5d9"
+            ]
+        ]
+    },
+    {
+        "id": "b489543c3a0a883e",
+        "type": "mqtt in",
+        "z": "6c57a4257b2aeef5",
+        "name": "",
+        "topic": "estacionamento/vaga3/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "c332a0d8aee718d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 480,
+        "y": 400,
+        "wires": [
+            [
+                "2edf7f273997b5d9"
+            ]
+        ]
+    },
+    {
+        "id": "64373475b231189b",
+        "type": "telegram receiver",
+        "z": "6c57a4257b2aeef5",
+        "name": "",
+        "bot": "3c17fadad434ea3f",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 430,
+        "y": 600,
+        "wires": [
+            [],
+            [
+                "28c7f9dfde65d4cc"
+            ]
+        ]
+    },
+    {
+        "id": "a9cc3194d67720b2",
+        "type": "debug",
+        "z": "6c57a4257b2aeef5",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "2edf7f273997b5d9",
+        "type": "function",
+        "z": "6c57a4257b2aeef5",
+        "name": "function 1",
+        "func": "// Se ainda não existe um objeto global de status, cria\nlet vagas = global.get(\"vagas\") || {\n    vaga1: \"desconhecido\",\n    vaga2: \"desconhecido\",\n    vaga3: \"desconhecido\"\n};\n\n// Descobre qual tópico chegou\nlet topico = msg.topic;\n\n// Atualiza somente a vaga correspondente\nif (topico.includes(\"vaga1\")) vagas.vaga1 = msg.payload;\nif (topico.includes(\"vaga2\")) vagas.vaga2 = msg.payload;\nif (topico.includes(\"vaga3\")) vagas.vaga3 = msg.payload;\n\n// Salva o novo status geral\nglobal.set(\"vagas\", vagas);\n\n// 🔥 Prepara mensagem para enviar ao InfluxDB\nmsg.influx = {\n    measurement: \"vaga_status\",\n    fields: {\n        vaga1: vagas.vaga1,\n        vaga2: vagas.vaga2,\n        vaga3: vagas.vaga3\n    },\n    tags: {\n        origem: \"estacionamento\"\n    }\n};\n\n// Retorna o estado atual normal para o detectar mudança e Telegram\nmsg.payload = vagas;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 320,
+        "wires": [
+            [
+                "a9cc3194d67720b2",
+                "799b2e111de9dfb8"
+            ]
+        ]
+    },
+    {
+        "id": "0d86eb7076acf6e7",
+        "type": "telegram sender",
+        "z": "6c57a4257b2aeef5",
+        "name": "",
+        "bot": "3c17fadad434ea3f",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1070,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "799b2e111de9dfb8",
+        "type": "function",
+        "z": "6c57a4257b2aeef5",
+        "name": "detectar mudança",
+        "func": "// Estado atual das vagas vindo do function 1\nlet atual = msg.payload;\n\n// Pega o estado anterior salvo\nlet anterior = global.get(\"vagas_anterior\") || {};\n\n// Verifica se houve mudança em qualquer uma das vagas\nlet mudou =\n    atual.vaga1 !== anterior.vaga1 ||\n    atual.vaga2 !== anterior.vaga2 ||\n    atual.vaga3 !== anterior.vaga3;\n\n// Atualiza o estado anterior\nglobal.set(\"vagas_anterior\", atual);\n\n// Se não mudou, não envia nada\nif (!mudou) {\n    return null;\n}\n\n// -----------------------------\n// 1) MENSAGEM PARA TELEGRAM\n// -----------------------------\nlet msgTelegram = {\n    payload: {\n        chatId: 8053871352,\n        type: \"message\",\n        content:\n            \"🚗 *Status das Vagas Atualizado*\\n\\n\" +\n            `Vaga 1: *${atual.vaga1}*\\n` +\n            `Vaga 2: *${atual.vaga2}*\\n` +\n            `Vaga 3: *${atual.vaga3}*`\n    }\n};\n\n// -----------------------------\n// 2) MENSAGEM PARA INFLUXDB\n// -----------------------------\nlet msgInflux = {\n    measurement: \"status\",\n    payload: {\n        vaga1: atual.vaga1,\n        vaga2: atual.vaga2,\n        vaga3: atual.vaga3\n    }\n};\n\n// ENVIA DE UMA SÓ VEZ (2 saídas)\nreturn [msgTelegram, msgInflux];\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 380,
+        "wires": [
+            [
+                "0d86eb7076acf6e7"
+            ],
+            [
+                "458335040343edd9"
+            ]
+        ]
+    },
+    {
+        "id": "28c7f9dfde65d4cc",
+        "type": "debug",
+        "z": "6c57a4257b2aeef5",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "458335040343edd9",
+        "type": "influxdb3-write",
+        "z": "6c57a4257b2aeef5",
+        "influxdb": "b176993757d74a83",
+        "name": "vaga_status",
+        "measurement": "status",
+        "database": "estacionamento",
+        "x": 830,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "acb44f3fe06997df",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-telegrambot": "16.4.0",
+            "node-red-contrib-influxdb3": "1.0.2"
+        }
+    }
+]
