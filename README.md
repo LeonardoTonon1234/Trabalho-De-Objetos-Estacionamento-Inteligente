@@ -60,6 +60,9 @@ Funções do fluxo:
 
 O projeto utiliza exclusivamente **programação low-code**.
 
+![Print](https://github.com/LeonardoTonon1234/Trabalho-De-Objetos-Estacionamento-Inteligente/blob/main/node-red/imagem_2025-11-21_170016983.png
+)
+
 ---
 
 ### **4. Banco de Dados – InfluxDB**
@@ -79,11 +82,14 @@ Bucket utilizado:
 - 3 indicadores Gauge (vaga1, vaga2, vaga3)
 - Cores dinâmicas (verde / vermelho)
 - Atualização automática
+![Print](https://github.com/LeonardoTonon1234/Trabalho-De-Objetos-Estacionamento-Inteligente/blob/main/dashboards/Dashboard%20Estacionamento-1763755913104.png
+)
 
 #### 📈 **Dashboard 2 – Resumo do Estacionamento**
 Inclui:
 - Total de vagas ocupadas com escala de cores (verde, amarelo, laranja, vermelho)
 - Histórico de ocupação
+![Print](https://github.com/LeonardoTonon1234/Trabalho-De-Objetos-Estacionamento-Inteligente/blob/main/dashboards/RESUMO%20DO%20ESTACIONAMENTO-1763755620039.png)
 
 ---
 
