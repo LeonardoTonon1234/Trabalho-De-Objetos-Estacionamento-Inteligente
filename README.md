@@ -38,7 +38,7 @@ Os dispositivos enviam os status via MQTT utilizando o tópico:
 - estacionamento/vaga1
 - estacionamento/vaga2
 - estacionamento/vaga3
-
+![Print](https://github.com/LeonardoTonon1234/Trabalho-De-Objetos-Estacionamento-Inteligente/blob/main/esp32/imagem_2025-11-21_170137302.png)
 
 ---
 
